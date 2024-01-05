@@ -75,22 +75,6 @@ select {
   margin: 10px !important;
 }
 
-.bg-blue {
-  background-color: #3182ce;
-}
-
-.bg-red {
-  background-color: #e53e3e;
-}
-
-.bg-green {
-  background-color: #38a169;
-}
-
-.bg-purple {
-  background-color: #9f7aea;
-}
-
 /* You can create similar classes for other colors without referencing Chakra UI */
 
 h1,
@@ -100,7 +84,8 @@ h4 {
   text-align: center;
 }
 
-form {
+form,
+.ctn {
   float: center;
   margin: 5px;
   padding: 10px;
@@ -108,13 +93,24 @@ form {
 }
 
 @media only screen and (max-width: 600px) {
-  form {
+  form,
+  .ctn {
     width: 100%;
   }
 }
 
 .btn {
   background-color: #38a169;
+  border-radius: 5px;
+  border: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+}
+.btn-copy {
+  width: 100%;
+  height: 40px;
   border-radius: 5px;
   border: 0;
   color: black;
@@ -142,4 +138,24 @@ form {
 
 .preview-hr {
   border-top: 1px dashed black;
+}
+
+.bg-blue {
+  background-color: #3182ce;
+}
+
+.bg-red {
+  background-color: #e53e3e;
+}
+
+.bg-green {
+  background-color: #38a169;
+}
+
+.bg-purple {
+  background-color: #9f7aea;
+}
+
+.bg-yellow {
+  background-color: #ecc94b;
 }

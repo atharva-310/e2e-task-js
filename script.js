@@ -1,12 +1,16 @@
 /**
  * Code Overview
  *
+ * ------ Input Field Creators -----
  * * addTypography(form,tagname) :
  *      Function can be used to add typography such as h2, h3, p
  *
  * * addInputWithType(form,inputType) :
  *      function to add input fields with the types like text, email, password
+ *
  * * addTextArea(form) :
+ *      function to add textarea fields with text type
+ *
  *
  * ------ Preview Forms ------
  * * previewFormAppend(element) :
@@ -15,7 +19,16 @@
  * * deletePreviewField(event) :
  *      Remove field from the preview Form
  *
+ *
+ * ------- Features -------
+ *
+ * * showRawHtml() :
+ *      Adds Raw HTML Section to the webpage
+ *
  * ------ Utility Functions -----
+ * * extractFormHtml() :
+ *      Extract raw html from the preview form without other editing fields
+ *
  * * generateString(length):
  *      program to generate random strings
  *
@@ -197,6 +210,70 @@ function deletePreviewField(event) {
   previewHrToDelete.remove();
 }
 
+// Features
+const showButton = document.getElementById("show");
+showButton.addEventListener("click", () => {
+  if (showButton.classList.contains("bg-blue")) {
+    showRawHtml();
+  } else {
+    removeRawHtml();
+  }
+});
+
+function removeRawHtml() {
+  const rawHtmlElement = document.getElementById("rawhtml");
+  rawHtmlElement.remove();
+  showButton.value = "Show & Copy Raw Html";
+  showButton.classList.add("bg-blue");
+  showButton.classList.remove("bg-purple");
+}
+
+// Adds Raw HTML Section to the webpage
+
+function showRawHtml() {
+  const rootElement = document.getElementById("root");
+  const container = document.createElement("div");
+  container.className = "ctn";
+  container.id = "rawhtml";
+
+  const rawHtmlElement = document.createElement("pre");
+  rawHtmlElement.innerText = extractFormHtml();
+  rawHtmlElement.id = "rawhtmlsource";
+
+  const copyBtn = document.createElement("button");
+  copyBtn.classList.add("btn-copy");
+  copyBtn.classList.add("bg-yellow");
+  copyBtn.textContent = "Copy Raw HTML";
+  copyBtn.addEventListener("click", copyRawHtml);
+
+  const heading = document.createElement("h2");
+  heading.innerText = "Raw HTML code for Form";
+
+  container.appendChild(heading);
+  container.appendChild(rawHtmlElement);
+  container.appendChild(copyBtn);
+
+  rootElement.appendChild(container);
+
+  showButton.value = "Hide Raw HTML";
+  showButton.classList.remove("bg-blue");
+  showButton.classList.add("bg-purple");
+}
+
+function copyRawHtml() {
+  const rawHtmlElement = document.getElementById("rawhtmlsource");
+  navigator.clipboard.writeText(rawHtmlElement.innerText).then(
+    () => {
+      console.log("Content copied to clipboard");
+      window.alert("Raw HTML Copied");
+    },
+    () => {
+      console.error("Failed to copy");
+      window.alert("Failed to copy");
+    }
+  );
+}
+
 // Utility Functions
 
 // program to generate random strings
@@ -217,4 +294,17 @@ function generateString(length) {
 
 function removeSpace(text) {
   return text.split(" ").join("");
+}
+
+function extractFormHtml() {
+  const list = document.getElementsByClassName("pfieldgroup");
+  let data = "";
+
+  for (let i = 0; i < list.length; i++) {
+    data += list[i].innerHTML;
+  }
+  if (data.trim() === "") {
+    data = "Add Fields To the form to see the Raw HTML";
+  }
+  return data;
 }
