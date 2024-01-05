@@ -83,6 +83,11 @@ const FieldOptions = [
     name: "Textarea - Text",
     callback: (form) => addTextArea(form, "text"),
   },
+  {
+    id: 9,
+    name: "Select",
+    callback: (form) => showOptions(),
+  },
 ];
 
 // Populating the Options to the Select
@@ -130,7 +135,7 @@ function addInputWithType(form, inputType) {
   inputElement.name = name;
   console.log(labelValue, name);
   if (form.isRequired.checked) {
-    inputElement.setAttribute("required", "");
+    inputElement.setAttribute("required", true);
   }
   console.log(inputElement);
   labelElement.innerHTML = labelValue;
@@ -160,16 +165,70 @@ function addTextArea(form, inputType) {
   if (form.isRequired.checked) {
     textareaElement.setAttribute("required", "");
   }
-  console.log(textareaElement);
+
   labelElement.innerHTML = labelValue;
   labelElement.htmlFor = name;
-  console.log(labelElement);
 
   const container = document.createElement("div");
   container.appendChild(labelElement);
   container.appendChild(textareaElement);
 
   previewFormAppend(container);
+}
+
+// function to add select tag
+
+function addSelect(e) {
+  e.preventDefault();
+
+  const form = document.getElementById("fcreator");
+
+  const selectElement = document.createElement("select");
+  const labelElement = document.createElement("label");
+
+  const labelValue = form.label.value;
+  const name = removeSpace(labelValue);
+
+  selectElement.id = generateString(5);
+  selectElement.name = name;
+
+  if (form.isRequired.checked) {
+    selectElement.setAttribute("required", "");
+  }
+
+  labelElement.innerHTML = labelValue;
+  labelElement.htmlFor = name;
+
+  const optionsList = getOptionsArray();
+
+  optionsList.forEach((item) => {
+    const optionElement = document.createElement("option");
+    optionElement.innerHTML = item;
+    optionElement.value = removeSpace(item);
+    selectElement.appendChild(optionElement);
+  });
+  console.log(labelElement);
+  console.log(selectElement);
+
+  const container = document.createElement("div");
+  container.appendChild(labelElement);
+  container.appendChild(selectElement);
+
+  previewFormAppend(container);
+}
+
+// Adding event listner to options form
+const optionAddBtn = document.getElementById("optionadd");
+optionAddBtn.addEventListener("click", addOptions);
+
+const options = [];
+
+function addOptions(event) {
+  event.preventDefault();
+  const inputField = document.getElementById("optionname");
+  const title = document.createElement("h3");
+  title.innerText = inputField.value;
+  appendOption(title);
 }
 
 // Preview Forms
@@ -201,8 +260,39 @@ function previewFormAppend(element) {
   previewForm.appendChild(previewHr);
 }
 
+const optiondisplay = document.getElementById("optiondisplay");
+function appendOption(element) {
+  const container = document.createElement("div");
+  const previewHr = document.createElement("hr");
+  previewHr.className = "preview-hr";
+
+  const fieldGroup = document.createElement("div");
+  fieldGroup.className = "pfieldgroup";
+  fieldGroup.appendChild(element);
+
+  const deleteBtn = document.createElement("img");
+  deleteBtn.src = "./assets/icon/delete.png";
+  deleteBtn.alt = "delete";
+  deleteBtn.className = "btn-delete";
+  deleteBtn.addEventListener("click", deleteOption);
+
+  container.className = "pfield";
+  container.id = "optiondisplayctn";
+  container.appendChild(fieldGroup);
+  container.appendChild(deleteBtn);
+
+  optiondisplay.appendChild(container);
+  optiondisplay.appendChild(previewHr);
+}
 // Remove field from the preview Form
 function deletePreviewField(event) {
+  const deleteBtn = event.target;
+  const parentToDelete = deleteBtn.parentElement;
+  const previewHrToDelete = parentToDelete.nextSibling;
+  parentToDelete.remove();
+  previewHrToDelete.remove();
+}
+function deleteOption(event) {
   const deleteBtn = event.target;
   const parentToDelete = deleteBtn.parentElement;
   const previewHrToDelete = parentToDelete.nextSibling;
@@ -236,7 +326,8 @@ function showRawHtml() {
   container.className = "ctn";
   container.id = "rawhtml";
 
-  const rawHtmlElement = document.createElement("pre");
+  const rawHtmlElement = document.createElement("textarea");
+  rawHtmlElement.disabled;
   rawHtmlElement.innerText = extractFormHtml();
   rawHtmlElement.id = "rawhtmlsource";
 
@@ -262,7 +353,7 @@ function showRawHtml() {
 
 function copyRawHtml() {
   const rawHtmlElement = document.getElementById("rawhtmlsource");
-  navigator.clipboard.writeText(rawHtmlElement.innerText).then(
+  navigator.clipboard.writeText(rawHtmlElement.value).then(
     () => {
       console.log("Content copied to clipboard");
       window.alert("Raw HTML Copied");
@@ -307,4 +398,32 @@ function extractFormHtml() {
     data = "Add Fields To the form to see the Raw HTML";
   }
   return data;
+}
+
+function showOptions() {
+  const form = document.getElementById("formoptions");
+  form.classList.remove("hide");
+  const submitOptionsBtn = document.getElementById("submitoptions");
+
+  submitOptionsBtn.addEventListener("click", addSelect);
+}
+function hideOptions() {
+  const form = document.getElementById("formoptions");
+  form.classList.add("hide");
+}
+
+const clearBtn = document.getElementById("clearoption");
+clearBtn.addEventListener("click", () => {
+  const optiondisplay = document.getElementById("optiondisplay");
+  optiondisplay.innerHTML = "";
+  hideOptions();
+});
+
+function getOptionsArray() {
+  const options = document.querySelectorAll("#optiondisplay .pfieldgroup h3");
+  const optionsName = [];
+  for (let i = 0; i < options.length; i++) {
+    optionsName.push(options[i].innerHTML);
+  }
+  return optionsName;
 }

@@ -75,6 +75,30 @@ select {
   margin: 10px !important;
 }
 
+.optiongroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#optionadd {
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  border: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+}
+.optiongroup input {
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.hide {
+  display: none;
+}
+
 /* You can create similar classes for other colors without referencing Chakra UI */
 
 h1,
