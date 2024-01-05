@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form Creator</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets  -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="root">
+      <h1>Form Creator</h1>
+
+      <form id="fcreator">
+        <hr />
+        <h2>Create Field</h2>
+        <p style="font-style: italic">
+          One by one add the field to the form. Live preview can be seen just
+          below this form.
+        </p>
+        <label for="label">Field Label or Value</label>
+        <textarea
+          type="text"
+          id="label"
+          name="label"
+          placeholder="Attendance Form"
+          required
+        ></textarea>
+        <label for="type"> Field Type</label>
+        <select id="type" name="type" required></select>
+        <div class="checkgroup">
+          <label class="checkbox" for="isRequired"> Is required ?</label>
+          <input
+            class="checkbox"
+            type="checkbox"
+            id="isRequired"
+            name="isRequired"
+          />
+        </div>
+        <input class="btn" type="submit" value="Add" />
+        <hr />
+      </form>
+
+      <form id="fpreview">
+        <hr />
+        <h1>Preview</h1>
+        <hr class="preview-hr" />
+      </form>
+      <form id="actions">
+        <input class="btn" type="button" value="Generate Form" />
+      </form>
+    </div>
+
+    <!-- <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      crossorigin="anonymous"
+    ></script> -->
+    <script src="./script.js"></script>
+  </body>
+</html>
